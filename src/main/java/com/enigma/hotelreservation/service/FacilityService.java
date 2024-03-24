@@ -3,7 +3,7 @@ package com.enigma.hotelreservation.service;
 import com.enigma.hotelreservation.model.entity.Facility;
 import com.enigma.hotelreservation.model.request.facility.FacilityCreateRequest;
 import com.enigma.hotelreservation.model.request.facility.FacilityUpdateRequest;
-import com.enigma.hotelreservation.model.response.response.FacilityResponse;
+import com.enigma.hotelreservation.model.response.facility.FacilityResponse;
 
 import java.util.List;
 

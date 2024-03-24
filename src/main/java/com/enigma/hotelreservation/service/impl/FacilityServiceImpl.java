@@ -4,13 +4,12 @@ import com.enigma.hotelreservation.constant.ResponseMessage;
 import com.enigma.hotelreservation.model.entity.Facility;
 import com.enigma.hotelreservation.model.request.facility.FacilityCreateRequest;
 import com.enigma.hotelreservation.model.request.facility.FacilityUpdateRequest;
-import com.enigma.hotelreservation.model.response.response.FacilityResponse;
+import com.enigma.hotelreservation.model.response.facility.FacilityResponse;
 import com.enigma.hotelreservation.repository.FacilityRepository;
 import com.enigma.hotelreservation.service.FacilityService;
 import com.enigma.hotelreservation.util.exception.DataNotFoundException;
 import com.enigma.hotelreservation.util.exception.QueryException;
 import com.enigma.hotelreservation.util.mapper.FacilityMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

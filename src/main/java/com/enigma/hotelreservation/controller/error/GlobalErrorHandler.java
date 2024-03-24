@@ -2,6 +2,7 @@ package com.enigma.hotelreservation.controller.error;
 
 import com.enigma.hotelreservation.model.response.ErrorResponse;
 import com.enigma.hotelreservation.util.exception.DataNotFoundException;
+import com.enigma.hotelreservation.util.exception.QueryException;
 import com.enigma.hotelreservation.util.exception.UnauthorizedAccessException;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,17 @@ public class GlobalErrorHandler {
         errorResponse.setTimestamp(LocalDateTime.now());
 
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(QueryException.class)
+    public ResponseEntity<ErrorResponse> handleQueryException(QueryException ex, WebRequest req) {
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

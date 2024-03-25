@@ -28,12 +28,19 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public FacilityResponse getById(Integer id) {
-        return FacilityMapper.mapToRes(this.getFacilityById(id));
+        return FacilityMapper.mapToRes(this.getActiveFacilityById(id));
     }
 
     @Override
     public Facility getFacilityById(Integer id) {
         Facility facility = facilityRepository.getFacilityById(id);
+        if (facility == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        return facility;
+    }
+
+    @Override
+    public Facility getActiveFacilityById(Integer id) {
+        Facility facility = facilityRepository.getActiveFacilityById(id);
         if (facility == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
         return facility;
     }
@@ -57,7 +64,7 @@ public class FacilityServiceImpl implements FacilityService {
         int rowsChange = facilityRepository.updateFacility(request.getName(), request.getId());
         if (rowsChange == 0) throw new QueryException(ResponseMessage.UPDATE_DATA_FAILED);
 
-        return FacilityMapper.mapToRes(this.getFacilityById(request.getId()));
+        return FacilityMapper.mapToRes(this.getActiveFacilityById(request.getId()));
     }
 
     @Override
@@ -69,7 +76,7 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Boolean isExist(Integer id) {
-        Facility facility = facilityRepository.getFacilityById(id);
+        Facility facility = facilityRepository.getActiveFacilityById(id);
         return facility != null;
     }
 }

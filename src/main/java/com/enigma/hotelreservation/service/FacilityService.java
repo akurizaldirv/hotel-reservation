@@ -11,6 +11,7 @@ public interface FacilityService {
     List<FacilityResponse> getAll();
     FacilityResponse getById(Integer id);
     Facility getFacilityById(Integer id);
+    Facility getActiveFacilityById(Integer id);
     Facility getLastFacility();
     FacilityResponse create(FacilityCreateRequest request);
     FacilityResponse update(FacilityUpdateRequest request);

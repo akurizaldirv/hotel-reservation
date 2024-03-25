@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = DbPath.ROOM)
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"room_type_id", "room_number"})})
 @Builder(toBuilder = true)
 public class Room {
     @Id

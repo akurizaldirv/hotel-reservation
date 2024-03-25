@@ -1,6 +1,7 @@
 package com.enigma.hotelreservation.model.entity;
 
 import com.enigma.hotelreservation.constant.DbPath;
+import com.enigma.hotelreservation.util.enums.EStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,10 @@ public class Facility {
 
     @Column(nullable = false)
     private String name;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private EStatus status;
 
     @OneToMany(mappedBy = "facility")
     private List<RoomFacility> roomFacilities;

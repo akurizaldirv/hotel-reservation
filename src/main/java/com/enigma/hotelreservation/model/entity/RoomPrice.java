@@ -22,7 +22,7 @@ public class RoomPrice {
     private Room room;
 
     @Column(nullable = false)
-    private Integer price;
+    private Long price;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

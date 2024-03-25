@@ -23,4 +23,7 @@ public interface RoomFacilityRepository extends JpaRepository<RoomFacility, Inte
 
     @Query(value = "SELECT * FROM m_room_facility WHERE room_type_id = ?1", nativeQuery = true)
     List<RoomFacility> getAllByRoomTypeId(Integer id);
+
+    @Query(value = "SELECT * FROM m_room_facility WHERE room_type_id = ?1 AND facility_id = ?2", nativeQuery = true)
+    RoomFacility getByRoomTypeIdAndFacilityId(Integer roomTypeId, Integer facilityId);
 }

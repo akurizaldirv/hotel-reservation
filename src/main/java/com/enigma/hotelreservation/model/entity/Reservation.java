@@ -20,8 +20,8 @@ public class Reservation {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    @JoinColumn(name = "room_price_id", nullable = false)
+    private RoomPrice roomPrice;
 
     @Column(name = "checkin_date", nullable = false)
     private LocalDateTime checkinDate;

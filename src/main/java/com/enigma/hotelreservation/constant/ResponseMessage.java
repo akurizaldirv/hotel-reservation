@@ -11,4 +11,8 @@ public class ResponseMessage {
     public static final String CREATE_DATA_FAILED = "Create Data Failed";
     public static final String UPDATE_DATA_FAILED = "Update Data Failed";
     public static final String DELETE_DATA_FAILED = "Delete Data Failed";
+    public static final String REGISTER_FAILED = "Register Failed";
+    public static final String REGISTER_SUCCESS = "Register Success";
+    public static final String LOGIN_FAILED = "Login Failed";
+    public static final String LOGIN_SUCCESS = "Login Success";
 }

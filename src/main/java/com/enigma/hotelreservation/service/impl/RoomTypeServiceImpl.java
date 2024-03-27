@@ -64,14 +64,14 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     public RoomType getRoomTypeById(Integer id) {
         RoomType roomType = roomTypeRepository.getRoomTypeById(id);
-        if (roomType == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (roomType == null) throw new DataNotFoundException(ResponseMessage.ROOM_TYPE_NOT_FOUND);
         return roomType;
     }
 
     @Override
     public RoomType getActiveRoomTypeById(Integer id) {
         RoomType roomType = roomTypeRepository.getActiveRoomTypeById(id);
-        if (roomType == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (roomType == null) throw new DataNotFoundException(ResponseMessage.ROOM_TYPE_NOT_FOUND);
         return roomType;
     }
 
@@ -102,7 +102,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public RoomTypeResponse update(RoomTypeUpdateRequest request) {
-        if (!this.isExist(request.getId())) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (!this.isExist(request.getId())) throw new DataNotFoundException(ResponseMessage.ROOM_TYPE_NOT_FOUND);
         BedType bedType = bedTypeService.getOrSave(request.getBedType());
         AtomicInteger rowsChange = new AtomicInteger(roomTypeRepository.updateRoomType(
                 request.getName(),
@@ -116,7 +116,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         roomFacilityService.deleteAllByRoomTypeId(roomType.getId());
         List<RoomFacility> roomFacilities = new ArrayList<>();
         request.getFacilitiesId().forEach(id -> {
-            if (!facilityService.isExist(id)) throw new DataNotFoundException("Facility ID not found");
+            if (!facilityService.isExist(id)) throw new DataNotFoundException(ResponseMessage.FACILITY_NOT_FOUND);
             roomFacilities.add(roomFacilityService.insertRoomFacility(roomType.getId(), id));
         });
 
@@ -129,7 +129,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
     @Override
     public void delete(Integer id) {
-        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.ROOM_TYPE_NOT_FOUND);
         int rowsChange = roomTypeRepository.deleteRoomType(id);
         if (rowsChange == 0) throw new QueryException(ResponseMessage.DELETE_DATA_FAILED);
     }

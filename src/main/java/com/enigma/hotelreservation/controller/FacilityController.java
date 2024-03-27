@@ -51,10 +51,10 @@ public class FacilityController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> create(@Validated @RequestBody FacilityCreateRequest request) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                         CommonResponse.builder()
-                                .statusCode(HttpStatus.OK.value())
+                                .statusCode(HttpStatus.CREATED.value())
                                 .message(ResponseMessage.CREATE_DATA_SUCCESS)
                                 .data(facilityService.create(request))
                                 .build()

@@ -53,7 +53,7 @@ public class JwtUtil {
 
             return decodedJWT.getIssuer().equals(APP_NAME);
         } catch (JWTVerificationException e) {
-            throw new UnauthorizedAccessException("Unauthorized Access");
+            return false;
         }
     }
 

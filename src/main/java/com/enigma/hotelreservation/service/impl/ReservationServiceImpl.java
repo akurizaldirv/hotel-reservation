@@ -35,7 +35,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation getReservationById(Integer id) {
         Reservation reservation = reservationRepository.getById(id);
-        if (reservation == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (reservation == null) throw new DataNotFoundException(ResponseMessage.RESERVATION_NOT_FOUND);
         return reservation;
     }
 
@@ -47,28 +47,28 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationResponse cancelById(Integer id) {
-        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.RESERVATION_NOT_FOUND);
         reservationRepository.updateStatus(EReservationStatus.CANCELLED.name(), id);
         return this.getReservationResponse(this.getReservationById(id));
     }
 
     @Override
     public ReservationResponse setInvalidPaymentById(Integer id) {
-        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.RESERVATION_NOT_FOUND);
         reservationRepository.updateStatus(EReservationStatus.PAYMENT_INVALID.name(), id);
         return this.getReservationResponse(this.getReservationById(id));
     }
 
     @Override
     public ReservationResponse setPaymentSuccessById(Integer id) {
-        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.RESERVATION_NOT_FOUND);
         reservationRepository.updateStatus(EReservationStatus.SUCCESS.name(), id);
         return this.getReservationResponse(this.getReservationById(id));
     }
 
     @Override
     public ReservationResponse setPaymentCheckingById(Integer id) {
-        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.RESERVATION_NOT_FOUND);
         reservationRepository.updateStatus(EReservationStatus.CHECKING.name(), id);
         return this.getReservationResponse(this.getReservationById(id));
     }
@@ -102,12 +102,16 @@ public class ReservationServiceImpl implements ReservationService {
         LocalDate dateStart = LocalDateValidator.mapToLocalDate(request.getCheckinDate());
         LocalDate dateEnd = LocalDateValidator.mapToLocalDate(request.getCheckoutDate());
 
+        if (LocalDate.now().isAfter(dateStart) || dateStart.isAfter(dateEnd)) {
+            throw new ValidationException(ResponseMessage.INVALID_RSVP_DATE);
+        }
+
         dateStart.datesUntil(dateEnd).forEach(date -> {
             if (!this.isAvailable(date, request.getRoomId())) throw new ValidationException("Room ID: " + request.getRoomId() +
                     " for date: " + date + " is Unavailable");
         });
 
-        if (!LocalDateValidator.isResvDateValid(dateStart, dateEnd)) throw new ValidationException("Invalid Reservation Date");
+        if (!LocalDateValidator.isResvDateValid(dateStart, dateEnd)) throw new ValidationException(ResponseMessage.INVALID_RSVP_DATE);
 
         reservationRepository.insert(
                 dateEnd,

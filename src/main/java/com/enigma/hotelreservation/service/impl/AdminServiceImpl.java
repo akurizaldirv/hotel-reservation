@@ -28,7 +28,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin getAdminById(Integer id) {
         Admin admin = adminRepository.getById(id);
-        if (admin == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (admin == null) throw new DataNotFoundException(ResponseMessage.ADMIN_NOT_FOUND);
         return admin;
     }
 

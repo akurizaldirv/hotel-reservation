@@ -31,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerById(Integer id) {
         Customer customer = customerRepository.getById(id);
-        if (customer == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (customer == null) throw new DataNotFoundException(ResponseMessage.CUSTOMER_NOT_FOUND);
         return customer;
     }
 

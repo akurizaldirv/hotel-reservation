@@ -34,14 +34,14 @@ public class FacilityServiceImpl implements FacilityService {
     @Override
     public Facility getFacilityById(Integer id) {
         Facility facility = facilityRepository.getFacilityById(id);
-        if (facility == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (facility == null) throw new DataNotFoundException(ResponseMessage.FACILITY_NOT_FOUND);
         return facility;
     }
 
     @Override
     public Facility getActiveFacilityById(Integer id) {
         Facility facility = facilityRepository.getActiveFacilityById(id);
-        if (facility == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (facility == null) throw new DataNotFoundException(ResponseMessage.FACILITY_NOT_FOUND);
         return facility;
     }
 
@@ -59,7 +59,7 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public FacilityResponse update(FacilityUpdateRequest request) {
-        if (!this.isExist(request.getId())) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (!this.isExist(request.getId())) throw new DataNotFoundException(ResponseMessage.FACILITY_NOT_FOUND);
         int rowsChange = facilityRepository.updateFacility(request.getName(), request.getId());
 
         return FacilityMapper.mapToRes(this.getActiveFacilityById(request.getId()));
@@ -67,7 +67,7 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public void delete(Integer id) {
-        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.FACILITY_NOT_FOUND);
         int rowsChange = facilityRepository.deleteFacility(id);
         if (rowsChange == 0) throw new QueryException(ResponseMessage.DELETE_DATA_FAILED);
     }

@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(rollbackOn = Exception.class)
     public RegisterResponse registerAdmin(RegisterAdminRequest request) {
         UserCredential userCheck = userCredentialRepository.getByUsername(request.getUsername().toLowerCase());
-        if (userCheck != null) throw new ValidationException("Username has been Taken");
+        if (userCheck != null) throw new ValidationException(ResponseMessage.USERNAME_TAKEN);
         Role role = roleService.getOrSave(ERole.ROLE_ADMIN);
         int rowsChange = userCredentialRepository.insertUserCredential(
                 request.getUsername().toLowerCase(),

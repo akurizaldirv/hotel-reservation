@@ -53,14 +53,45 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public ReservationResponse setInvalidPaymentById(Integer id) {
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        reservationRepository.updateStatus(EReservationStatus.PAYMENT_INVALID.name(), id);
+        return this.getReservationResponse(this.getReservationById(id));
+    }
+
+    @Override
+    public ReservationResponse setPaymentSuccessById(Integer id) {
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        reservationRepository.updateStatus(EReservationStatus.SUCCESS.name(), id);
+        return this.getReservationResponse(this.getReservationById(id));
+    }
+
+    @Override
+    public ReservationResponse setPaymentCheckingById(Integer id) {
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        reservationRepository.updateStatus(EReservationStatus.CHECKING.name(), id);
+        return this.getReservationResponse(this.getReservationById(id));
+    }
+
+    @Override
     public Reservation getLastReservation() {
         return reservationRepository.getLastReservation();
     }
 
     @Override
-    public List<ReservationResponse> getAll() {
-        List<Reservation> reservations = reservationRepository.getAll();
+    public List<ReservationResponse> getAll(EReservationStatus status) {
+        List<Reservation> reservations;
+        if (status == null) {
+            reservations = reservationRepository.getAll();
+        } else {
+            reservations = this.getAllByStatus(status);
+        }
+
         return reservations.stream().map(this::getReservationResponse).toList();
+    }
+
+    private List<Reservation> getAllByStatus(EReservationStatus status) {
+        return reservationRepository.getAllByStatus(status.name());
     }
 
     @Override

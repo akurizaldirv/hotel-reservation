@@ -23,7 +23,7 @@ public class Payment {
     private Reservation reservation;
 
     @Column(name = "trx_date", nullable = false)
-    private LocalDateTime trx_date;
+    private LocalDateTime trxDate;
 
     @Column(nullable = false)
     private String filename;

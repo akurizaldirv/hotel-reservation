@@ -18,13 +18,19 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(value = "SELECT * FROM t_reservation", nativeQuery = true)
     List<Reservation> getAll();
 
+    @Query(value = "SELECT * FROM t_reservation WHERE status = :status", nativeQuery = true)
+    List<Reservation> getAllByStatus(String status);
+
     @Query(value = "SELECT * FROM t_reservation ORDER BY id DESC LIMIT 1", nativeQuery = true)
     Reservation getLastReservation();
 
     @Query(value = """
                 SELECT COUNT(*)
                 FROM t_reservation rsv JOIN t_room_price rp ON rsv.room_price_id = rp.id\n
-                JOIN t_room r ON rp.room_id = r.id WHERE r.id = :roomId AND :date BETWEEN checkin_date AND checkout_date
+                JOIN t_room r ON rp.room_id = r.id
+                WHERE r.id = :roomId AND
+                rsv.status IN ('CHECKING', 'PAYMENT', 'SUCCESS') AND
+                :date BETWEEN checkin_date AND checkout_date
             """, nativeQuery = true)
     int getCountByDateBetween(LocalDate date, Integer roomId);
 

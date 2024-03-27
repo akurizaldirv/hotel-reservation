@@ -14,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @RestControllerAdvice
 public class GlobalErrorHandler {
@@ -24,7 +25,7 @@ public class GlobalErrorHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
         errorResponse.setMessage(message);
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -36,7 +37,7 @@ public class GlobalErrorHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
         errorResponse.setMessage(message);
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -46,7 +47,7 @@ public class GlobalErrorHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
         errorResponse.setMessage(ex.getMessage());
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -57,7 +58,7 @@ public class GlobalErrorHandler {
 
         errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
         errorResponse.setMessage(ex.getMessage());
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.NOT_FOUND);
     }
@@ -68,7 +69,7 @@ public class GlobalErrorHandler {
 
         errorResponse.setStatusCode(HttpStatus.UNAUTHORIZED.value());
         errorResponse.setMessage(ex.getMessage());
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
@@ -79,7 +80,7 @@ public class GlobalErrorHandler {
 
         errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
         errorResponse.setMessage(ex.getMessage());
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -90,7 +91,7 @@ public class GlobalErrorHandler {
 //
 //        errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 //        errorResponse.setMessage(ex.getMessage());
-//        errorResponse.setTimestamp(LocalDateTime.now());
+//        errorResponse.setTimestamp(new Date();
 //
 //        return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 //    }

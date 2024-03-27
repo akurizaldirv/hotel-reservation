@@ -51,7 +51,6 @@ public class AuthServiceImpl implements AuthService {
                 passwordEncoder.encode(request.getPassword()),
                 role.getId()
         );
-        if (rowsChange == 0) throw new QueryException(ResponseMessage.CREATE_DATA_FAILED);
         UserCredential userCredential = userCredentialRepository.getByUsername(request.getUsername());
         Admin admin = adminService.create(request, userCredential);
 
@@ -69,7 +68,6 @@ public class AuthServiceImpl implements AuthService {
                 passwordEncoder.encode(request.getPassword()),
                 role.getId()
         );
-        if (rowsChange == 0) throw new QueryException(ResponseMessage.CREATE_DATA_FAILED);
         UserCredential userCredential = userCredentialRepository.getByUsername(request.getUsername());
         Customer customer = customerService.create(request, userCredential);
 

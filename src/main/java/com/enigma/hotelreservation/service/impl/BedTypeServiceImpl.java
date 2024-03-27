@@ -26,7 +26,6 @@ public class BedTypeServiceImpl implements BedTypeService {
         BedType bedType = this.getByName(name);
         if (bedType == null) {
             int rowsChange = bedTypeRepository.insertBedType(name.toUpperCase());
-            if (rowsChange == 0) throw new QueryException(ResponseMessage.CREATE_DATA_FAILED);
             return this.getByName(name);
         }
         return bedType;

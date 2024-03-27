@@ -1,10 +1,12 @@
 package com.enigma.hotelreservation.security;
 
 import com.enigma.hotelreservation.constant.AppPath;
+import com.enigma.hotelreservation.util.mapper.ErrorWriterMapper;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -13,8 +15,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.PrintWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -32,6 +38,26 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return ((request, response, authException) -> {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json");
+            PrintWriter writer = response.getWriter();
+            writer.write(ErrorWriterMapper.mapToString("Unauthorized Access", HttpStatus.UNAUTHORIZED.value()));
+        });
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return ((request, response, authException) -> {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json");
+            PrintWriter writer = response.getWriter();
+            writer.write(ErrorWriterMapper.mapToString("Authentication Needed", HttpStatus.FORBIDDEN.value()));
+        });
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .httpBasic(HttpBasicConfigurer::disable)
@@ -45,6 +71,11 @@ public class SecurityConfiguration {
                                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                                 .requestMatchers(WHITE_LIST).permitAll()
                                 .anyRequest().authenticated()
+                )
+                .exceptionHandling(handle ->
+                        handle
+                                .authenticationEntryPoint(authenticationEntryPoint())
+                                .accessDeniedHandler(accessDeniedHandler())
                 )
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

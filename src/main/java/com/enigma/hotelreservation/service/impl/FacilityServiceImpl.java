@@ -53,7 +53,6 @@ public class FacilityServiceImpl implements FacilityService {
     @Override
     public FacilityResponse create(FacilityCreateRequest request) {
         int rowsChange = facilityRepository.insertFacility(request.getName());
-        if (rowsChange == 0) throw new QueryException(ResponseMessage.CREATE_DATA_FAILED);
 
         return FacilityMapper.mapToRes(this.getLastFacility());
     }
@@ -62,7 +61,6 @@ public class FacilityServiceImpl implements FacilityService {
     public FacilityResponse update(FacilityUpdateRequest request) {
         if (!this.isExist(request.getId())) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
         int rowsChange = facilityRepository.updateFacility(request.getName(), request.getId());
-        if (rowsChange == 0) throw new QueryException(ResponseMessage.UPDATE_DATA_FAILED);
 
         return FacilityMapper.mapToRes(this.getActiveFacilityById(request.getId()));
     }

@@ -85,7 +85,6 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     public RoomTypeResponse create(RoomTypeCreateRequest request) {
         BedType bedType = bedTypeService.getOrSave(request.getBedType());
         AtomicInteger rowsChange = new AtomicInteger(roomTypeRepository.insertRoomType(request.getName(), request.getBedCount(), bedType.getId()));
-        if (rowsChange.get() == 0) throw new QueryException(ResponseMessage.CREATE_DATA_FAILED);
         RoomType roomType = this.getLastRoomType();
 
         List<RoomFacility> roomFacilities = new ArrayList<>();

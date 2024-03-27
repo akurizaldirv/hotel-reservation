@@ -9,7 +9,9 @@ import java.util.List;
 public interface ReservationService {
     Reservation getReservationById(Integer id);
     ReservationResponse getById(Integer id);
+    ReservationResponse cancelById(Integer id);
     Reservation getLastReservation();
     List<ReservationResponse> getAll();
     ReservationResponse create(ReservationCreateRequest request);
+    Boolean isExist(Integer id);
 }

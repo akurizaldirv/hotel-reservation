@@ -2,6 +2,7 @@ package com.enigma.hotelreservation.constant;
 
 public class ResponseMessage {
     public static final String GET_DATA_SUCCESS = "Get Data Successful";
+    public static final String CANCEL_SUCCESS = "Cancel Reservation Success";
     public static final String CREATE_DATA_SUCCESS = "Create Data Successful";
     public static final String UPDATE_DATA_SUCCESS = "Update Data Successful";
     public static final String DELETE_DATA_SUCCESS = "Delete Data Successful";

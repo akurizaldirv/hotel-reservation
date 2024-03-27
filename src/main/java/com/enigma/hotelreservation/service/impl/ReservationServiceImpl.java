@@ -12,6 +12,7 @@ import com.enigma.hotelreservation.repository.ReservationRepository;
 import com.enigma.hotelreservation.service.CustomerService;
 import com.enigma.hotelreservation.service.ReservationService;
 import com.enigma.hotelreservation.service.RoomService;
+import com.enigma.hotelreservation.util.enums.EReservationStatus;
 import com.enigma.hotelreservation.util.exception.DataNotFoundException;
 import com.enigma.hotelreservation.util.validation.LocalDateValidator;
 import com.enigma.hotelreservation.util.mapper.ReservationMapper;
@@ -41,7 +42,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationResponse getById(Integer id) {
         Reservation reservation = this.getReservationById(id);
-        return getReservationResponse(reservation);
+        return this.getReservationResponse(reservation);
+    }
+
+    @Override
+    public ReservationResponse cancelById(Integer id) {
+        if (!this.isExist(id)) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        reservationRepository.updateStatus(EReservationStatus.CANCELLED.name(), id);
+        return this.getReservationResponse(this.getReservationById(id));
     }
 
     @Override
@@ -64,8 +72,7 @@ public class ReservationServiceImpl implements ReservationService {
         LocalDate dateEnd = LocalDateValidator.mapToLocalDate(request.getCheckoutDate());
 
         dateStart.datesUntil(dateEnd).forEach(date -> {
-            System.out.println("--------------- " + date);
-            if (!this.isAvailable(date)) throw new ValidationException("Room ID: " + request.getRoomId() +
+            if (!this.isAvailable(date, request.getRoomId())) throw new ValidationException("Room ID: " + request.getRoomId() +
                     " for date: " + date + " is Unavailable");
         });
 
@@ -95,8 +102,14 @@ public class ReservationServiceImpl implements ReservationService {
         return ReservationMapper.mapToRes(reservation, customer, roomIdNameResponse, totalPrice);
     }
 
-    private Boolean isAvailable(LocalDate date) {
-        Integer count = reservationRepository.getCountByDateBetween(date);
+    @Override
+    public Boolean isExist(Integer id) {
+        Reservation reservation = this.getReservationById(id);
+        return reservation != null;
+    }
+
+    private Boolean isAvailable(LocalDate date, Integer roomId) {
+        Integer count = reservationRepository.getCountByDateBetween(date, roomId);
         return count == 0;
     }
 }

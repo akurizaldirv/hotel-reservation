@@ -11,6 +11,7 @@ public class AppPath {
     public static final String ADMIN = "/admin";
     public static final String REGISTER = "/register";
     public static final String LOGIN = "/login";
+    public static final String CANCEL = "/cancel";
     public static final String PAYMENT = "/payment";
     public static final String PAYMENT_ID = "/{paymentId}";
     public static final String ID = "/{id}";

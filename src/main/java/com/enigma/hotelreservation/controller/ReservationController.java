@@ -43,6 +43,18 @@ public class ReservationController {
                 );
     }
 
+    @PutMapping(AppPath.ID + AppPath.CANCEL)
+    public ResponseEntity<?> cancel(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        CommonResponse.builder()
+                                .statusCode(HttpStatus.OK.value())
+                                .message(ResponseMessage.CANCEL_SUCCESS)
+                                .data(reservationService.cancelById(id))
+                                .build()
+                );
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@Validated @RequestBody ReservationCreateRequest request) {
         return ResponseEntity.status(HttpStatus.OK)

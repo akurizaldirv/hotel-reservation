@@ -21,8 +21,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(value = "SELECT * FROM t_reservation ORDER BY id DESC LIMIT 1", nativeQuery = true)
     Reservation getLastReservation();
 
-    @Query(value = "SELECT COUNT(*) FROM t_reservation WHERE :date BETWEEN checkin_date AND checkout_date", nativeQuery = true)
-    int getCountByDateBetween(LocalDate date);
+    @Query(value = """
+                SELECT COUNT(*)
+                FROM t_reservation rsv JOIN t_room_price rp ON rsv.room_price_id = rp.id\n
+                JOIN t_room r ON rp.room_id = r.id WHERE r.id = :roomId AND :date BETWEEN checkin_date AND checkout_date
+            """, nativeQuery = true)
+    int getCountByDateBetween(LocalDate date, Integer roomId);
 
     @Modifying
     @Transactional(rollbackOn = Exception.class)
@@ -36,4 +40,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             )
             """, nativeQuery = true)
     int insert(LocalDate checkoutDate, LocalDate checkinDate, Integer customerId, Integer roomPriceId);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional(rollbackOn = Exception.class)
+    @Query(value = "UPDATE t_reservation SET status = :status WHERE id = :id", nativeQuery = true)
+    int updateStatus(String status, Integer id);
 }

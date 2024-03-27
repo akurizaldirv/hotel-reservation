@@ -9,6 +9,7 @@ import com.enigma.hotelreservation.service.RoomTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class RoomTypeController {
     private final RoomTypeService roomTypeService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -34,6 +36,7 @@ public class RoomTypeController {
     }
 
     @GetMapping(AppPath.ID)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -46,6 +49,7 @@ public class RoomTypeController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> create(@Validated @RequestBody RoomTypeCreateRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -58,6 +62,7 @@ public class RoomTypeController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> update(@Validated @RequestBody RoomTypeUpdateRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -70,6 +75,7 @@ public class RoomTypeController {
     }
 
     @DeleteMapping(AppPath.ID)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         roomTypeService.delete(id);
         return ResponseEntity.status(HttpStatus.OK)

@@ -13,6 +13,7 @@ import com.enigma.hotelreservation.util.validation.EResvStatusValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,7 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final PaymentService paymentService;
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "null") String status) {
         EReservationStatus eStatus = EResvStatusValidator.validate(status);
         return ResponseEntity.status(HttpStatus.OK)
@@ -39,6 +41,7 @@ public class ReservationController {
     }
 
     @GetMapping(AppPath.ID)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -51,6 +54,7 @@ public class ReservationController {
     }
 
     @PutMapping(AppPath.ID + AppPath.CANCEL)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<?> cancel(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -63,6 +67,7 @@ public class ReservationController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<?> create(@Validated @RequestBody ReservationCreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
@@ -75,6 +80,7 @@ public class ReservationController {
     }
 
     @PutMapping(AppPath.ID + AppPath.PAY)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<?> pay(@PathVariable Integer id, @RequestParam MultipartFile file) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(

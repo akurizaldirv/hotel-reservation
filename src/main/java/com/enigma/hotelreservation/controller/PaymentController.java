@@ -9,6 +9,7 @@ import com.enigma.hotelreservation.util.validation.EResvStatusValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "null") String status) {
         EReservationStatus eStatus = EResvStatusValidator.validate(status);
         return ResponseEntity.status(HttpStatus.OK)
@@ -32,6 +34,7 @@ public class PaymentController {
     }
 
     @GetMapping(AppPath.ID)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -44,6 +47,7 @@ public class PaymentController {
     }
 
     @PutMapping(AppPath.ID + AppPath.APPROVE)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> approve(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -56,6 +60,7 @@ public class PaymentController {
     }
 
     @PutMapping(AppPath.ID + AppPath.REJECT)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> reject(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(

@@ -21,6 +21,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query(value = "SELECT * FROM m_customer ORDER BY id DESC LIMIT 1", nativeQuery = true)
     Customer getLastCustomer();
 
+    @Query(value = "SELECT COUNT(*) FROM m_customer WHERE email = :email OR identity_number = :idNumber OR phone_number = :phone", nativeQuery = true)
+    int checkValidation(String email, String idNumber, String phone);
+
     @Modifying
     @Transactional(rollbackOn = Exception.class)
     @Query(value = "INSERT INTO m_customer (address, email, phone_number, name, identity_number, user_credential_id) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)

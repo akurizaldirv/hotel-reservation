@@ -18,7 +18,7 @@ public interface UserCredentialRepository extends JpaRepository<UserCredential, 
     @Query(value = "SELECT * FROM m_user_credential ORDER BY id LIMIT 1", nativeQuery = true)
     UserCredential getLastUserCredential();
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(value = "INSERT INTO m_user_credential (username, password, role_id) VALUES (?1, ?2, ?3)", nativeQuery = true)
     int insertUserCredential(String username, String password, Integer role_id);
 }

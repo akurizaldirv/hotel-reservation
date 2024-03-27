@@ -8,6 +8,7 @@ import com.enigma.hotelreservation.repository.AdminRepository;
 import com.enigma.hotelreservation.service.AdminService;
 import com.enigma.hotelreservation.util.exception.DataNotFoundException;
 import com.enigma.hotelreservation.util.exception.QueryException;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin create(RegisterAdminRequest request, UserCredential userCredential) {
+        int validation = adminRepository.checkValidation(request.getEmail(), request.getPhoneNumber());
+        if (validation > 0) throw new ValidationException("Email, or Phone Number has been taken");
         int rowsChange = adminRepository.insertAdmin(
                 request.getAddress(),
                 request.getEmail(),

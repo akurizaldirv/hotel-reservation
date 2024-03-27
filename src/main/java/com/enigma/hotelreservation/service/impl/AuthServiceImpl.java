@@ -14,6 +14,7 @@ import com.enigma.hotelreservation.util.exception.QueryException;
 import com.enigma.hotelreservation.util.mapper.AuthMapper;
 import com.enigma.hotelreservation.util.security.JwtUtil;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,14 +43,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public RegisterResponse registerAdmin(RegisterAdminRequest request) {
+        UserCredential userCheck = userCredentialRepository.getByUsername(request.getUsername().toLowerCase());
+        if (userCheck != null) throw new ValidationException("Username has been Taken");
         Role role = roleService.getOrSave(ERole.ROLE_ADMIN);
         int rowsChange = userCredentialRepository.insertUserCredential(
-                request.getUsername(),
+                request.getUsername().toLowerCase(),
                 passwordEncoder.encode(request.getPassword()),
                 role.getId()
         );
         if (rowsChange == 0) throw new QueryException(ResponseMessage.CREATE_DATA_FAILED);
-        UserCredential userCredential = this.getLastUserCredential();
+        UserCredential userCredential = userCredentialRepository.getByUsername(request.getUsername());
         Admin admin = adminService.create(request, userCredential);
 
         return AuthMapper.mapToRegisterRes(userCredential);
@@ -58,14 +61,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public RegisterResponse registerCustomer(RegisterCustomerRequest request) {
+        UserCredential userCheck = userCredentialRepository.getByUsername(request.getUsername().toLowerCase());
+        if (userCheck != null) throw new ValidationException("Username has been Taken");
         Role role = roleService.getOrSave(ERole.ROLE_CUSTOMER);
         int rowsChange = userCredentialRepository.insertUserCredential(
-                request.getUsername(),
+                request.getUsername().toLowerCase(),
                 passwordEncoder.encode(request.getPassword()),
                 role.getId()
         );
         if (rowsChange == 0) throw new QueryException(ResponseMessage.CREATE_DATA_FAILED);
-        UserCredential userCredential = this.getLastUserCredential();
+        UserCredential userCredential = userCredentialRepository.getByUsername(request.getUsername());
         Customer customer = customerService.create(request, userCredential);
 
         return AuthMapper.mapToRegisterRes(userCredential);

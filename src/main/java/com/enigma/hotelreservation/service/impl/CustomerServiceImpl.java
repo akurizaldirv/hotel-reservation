@@ -11,6 +11,7 @@ import com.enigma.hotelreservation.service.CustomerService;
 import com.enigma.hotelreservation.util.exception.DataNotFoundException;
 import com.enigma.hotelreservation.util.exception.QueryException;
 import com.enigma.hotelreservation.util.mapper.CustomerMapper;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer create(RegisterCustomerRequest request, UserCredential userCredential) {
+        int validation = customerRepository.checkValidation(request.getEmail(), request.getIdentityNumber(), request.getPhoneNumber());
+        if (validation > 0) throw new ValidationException("Email, Identity Number, or Phone Number has been taken");
         int rowsChange = customerRepository.insertCustomer(
                 request.getAddress(),
                 request.getEmail(),

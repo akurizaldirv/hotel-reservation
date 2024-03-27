@@ -64,6 +64,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public RoomPrice getActiveRoomPriceByRoomId(Integer id) {
+        RoomPrice roomPrice = roomPriceRepository.getActiveRoomPriceByRoomId(id);
+        if (roomPrice == null) throw new DataNotFoundException(ResponseMessage.DATA_NOT_FOUND);
+        return roomPrice;
+    }
+
+    @Override
     public Room getLastRoom() {
         return roomRepository.getLastRoom();
     }

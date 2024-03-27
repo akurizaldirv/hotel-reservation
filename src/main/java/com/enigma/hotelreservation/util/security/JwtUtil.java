@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.enigma.hotelreservation.model.entity.AppUser;
+import com.enigma.hotelreservation.util.exception.UnauthorizedAccessException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +40,7 @@ public class JwtUtil {
                     .withClaim("role", appUser.getRole().name())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
-            throw new RuntimeException();
+            throw new UnauthorizedAccessException("Unauthorized Access");
         }
     }
 
@@ -52,7 +53,7 @@ public class JwtUtil {
 
             return decodedJWT.getIssuer().equals(APP_NAME);
         } catch (JWTVerificationException e) {
-            throw new RuntimeException();
+            throw new UnauthorizedAccessException("Unauthorized Access");
         }
     }
 
@@ -68,7 +69,7 @@ public class JwtUtil {
             info.put("role", decodedJWT.getClaim("role").asString());
             return info;
         } catch (JWTVerificationException e) {
-            throw new RuntimeException();
+            throw new UnauthorizedAccessException("Unauthorized Access");
         }
     }
 }

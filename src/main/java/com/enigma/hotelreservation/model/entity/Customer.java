@@ -5,6 +5,8 @@ import com.enigma.hotelreservation.constant.DbPath;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,6 +32,9 @@ public class Customer {
 
     @Column(nullable = false)
     private String address;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Reservation> reservations;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_credential_id", nullable = false)

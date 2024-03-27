@@ -6,6 +6,7 @@ import com.enigma.hotelreservation.util.enums.EReservationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,11 +24,15 @@ public class Reservation {
     @JoinColumn(name = "room_price_id", nullable = false)
     private RoomPrice roomPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
     @Column(name = "checkin_date", nullable = false)
-    private LocalDateTime checkinDate;
+    private LocalDate checkinDate;
 
     @Column(name = "checkout_date", nullable = false)
-    private LocalDateTime checkoutDate;
+    private LocalDate checkoutDate;
 
     @Enumerated(value = EnumType.STRING)
     private EReservationStatus status;

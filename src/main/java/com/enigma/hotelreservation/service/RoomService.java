@@ -1,6 +1,7 @@
 package com.enigma.hotelreservation.service;
 
 import com.enigma.hotelreservation.model.entity.Room;
+import com.enigma.hotelreservation.model.entity.RoomPrice;
 import com.enigma.hotelreservation.model.request.room.RoomCreateRequest;
 import com.enigma.hotelreservation.model.request.room.RoomUpdateRequest;
 import com.enigma.hotelreservation.model.response.room.RoomResponse;
@@ -12,6 +13,7 @@ public interface RoomService {
     RoomResponse getById(Integer id);
     Room getRoomById(Integer id);
     Room getActiveRoomById(Integer id);
+    RoomPrice getActiveRoomPriceByRoomId(Integer id);
     Room getLastRoom();
     RoomResponse create(RoomCreateRequest request);
     RoomResponse update(RoomUpdateRequest request);

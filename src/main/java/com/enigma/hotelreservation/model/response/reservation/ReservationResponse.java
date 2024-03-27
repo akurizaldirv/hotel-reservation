@@ -20,4 +20,5 @@ public class ReservationResponse {
     private LocalDate checkinDate;
     private LocalDate checkoutDate;
     private Long price;
+    private String status;
 }

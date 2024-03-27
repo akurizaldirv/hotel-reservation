@@ -14,6 +14,7 @@ public class ReservationMapper {
                 .checkoutDate(reservation.getCheckoutDate())
                 .customer(customer)
                 .room(room)
+                .status(reservation.getStatus().name())
                 .build();
     }
 }

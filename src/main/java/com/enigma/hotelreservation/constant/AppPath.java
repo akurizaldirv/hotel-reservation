@@ -9,6 +9,8 @@ public class AppPath {
     public static final String RESERVATION = BASE + "/reservation";
     public static final String CUSTOMER = "/customer";
     public static final String ADMIN = "/admin";
+    public static final String BASE_CUSTOMER = BASE + CUSTOMER;
+    public static final String BASE_ADMIN = BASE + ADMIN;
     public static final String REGISTER = "/register";
     public static final String LOGIN = "/login";
     public static final String CANCEL = "/cancel";

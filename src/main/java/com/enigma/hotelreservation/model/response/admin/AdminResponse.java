@@ -1,6 +1,7 @@
-package com.enigma.hotelreservation.model.response.customer;
+package com.enigma.hotelreservation.model.response.admin;
 
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class CustomerResponse {
+public class AdminResponse {
     private Integer id;
-    private String identityNumber;
     private String name;
     private String address;
     private String phoneNumber;

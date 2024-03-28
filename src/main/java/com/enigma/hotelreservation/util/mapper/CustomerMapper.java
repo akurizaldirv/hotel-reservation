@@ -11,6 +11,7 @@ public class CustomerMapper {
                 .email(customer.getEmail())
                 .address(customer.getAddress())
                 .identityNumber(customer.getIdentityNumber())
+                .phoneNumber(customer.getPhoneNumber())
                 .build();
     }
 }

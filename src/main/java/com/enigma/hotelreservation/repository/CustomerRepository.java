@@ -28,4 +28,12 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Transactional(rollbackOn = Exception.class)
     @Query(value = "INSERT INTO m_customer (address, email, phone_number, name, identity_number, user_credential_id) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)
     int insertCustomer(String address, String email, String phoneNumber, String name, String identityNumber, Integer userCredentialId);
+
+    @Modifying(flushAutomatically = true)
+    @Transactional(rollbackOn = Exception.class)
+    @Query(value = """
+        UPDATE m_customer SET identity_number=:identityNumber, address=:address, email=:email, phone_number=:phoneNumber, name=:name,
+        user_credential_id=:userCredentialId WHERE id=:id 
+    """, nativeQuery = true)
+    int updateCustomer(String address, String email, String phoneNumber, String name, String identityNumber, Integer userCredentialId, Integer id);
 }

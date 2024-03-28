@@ -27,4 +27,12 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
     @Transactional(rollbackOn = Exception.class)
     @Query(value = "INSERT INTO m_admin (address, email, phone_number, name, user_credential_id) VALUES (?1, ?2, ?3, ?4, ?5)", nativeQuery = true)
     int insertAdmin(String address, String email, String phoneNumber, String name, Integer userCredentialId);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional(rollbackOn = Exception.class)
+    @Query(value = """
+        UPDATE m_admin SET address=:address, email=:email, phone_number=:phoneNumber, name=:name,
+        user_credential_id=:userCredentialId WHERE id=:id 
+    """, nativeQuery = true)
+    int updateAdmin(String address, String email, String phoneNumber, String name, Integer userCredentialId, Integer id);
 }

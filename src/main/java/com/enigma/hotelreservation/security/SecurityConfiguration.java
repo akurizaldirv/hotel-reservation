@@ -30,7 +30,9 @@ import java.io.PrintWriter;
 public class SecurityConfiguration {
     private final AuthTokenFilter authTokenFilter;
     private final String[] WHITE_LIST = {
-            AppPath.AUTH + "/**"
+            AppPath.AUTH + "/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
     };
 
     @Bean

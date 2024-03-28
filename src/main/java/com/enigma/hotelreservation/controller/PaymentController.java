@@ -6,6 +6,7 @@ import com.enigma.hotelreservation.model.response.CommonResponse;
 import com.enigma.hotelreservation.service.PaymentService;
 import com.enigma.hotelreservation.util.enums.EReservationStatus;
 import com.enigma.hotelreservation.util.validation.EResvStatusValidator;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(AppPath.PAYMENT)
+@SecurityRequirement(name = "Bearer Authentication")
 public class PaymentController {
 
     private final PaymentService paymentService;

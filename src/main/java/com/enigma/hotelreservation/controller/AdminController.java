@@ -5,6 +5,7 @@ import com.enigma.hotelreservation.constant.ResponseMessage;
 import com.enigma.hotelreservation.model.request.user.AdminUpdateRequest;
 import com.enigma.hotelreservation.model.response.CommonResponse;
 import com.enigma.hotelreservation.service.AdminService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(AppPath.BASE_ADMIN)
+@SecurityRequirement(name = "Bearer Authentication")
 public class AdminController {
     private final AdminService adminService;
 

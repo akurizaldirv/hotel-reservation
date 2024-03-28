@@ -6,6 +6,7 @@ import com.enigma.hotelreservation.model.request.room.RoomCreateRequest;
 import com.enigma.hotelreservation.model.request.room.RoomUpdateRequest;
 import com.enigma.hotelreservation.model.response.CommonResponse;
 import com.enigma.hotelreservation.service.RoomService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(AppPath.ROOM)
+@SecurityRequirement(name = "Bearer Authentication")
 public class RoomController {
 
     private final RoomService roomService;

@@ -7,6 +7,7 @@ import com.enigma.hotelreservation.model.request.user.AdminUpdateRequest;
 import com.enigma.hotelreservation.model.request.user.CustomerUpdateRequest;
 import com.enigma.hotelreservation.model.response.CommonResponse;
 import com.enigma.hotelreservation.service.CustomerService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(AppPath.BASE_CUSTOMER)
+@SecurityRequirement(name = "Bearer Authentication")
 public class CustomerController {
     private final CustomerService customerService;
 

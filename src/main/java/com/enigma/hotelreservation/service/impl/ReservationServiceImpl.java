@@ -106,7 +106,7 @@ public class ReservationServiceImpl implements ReservationService {
             throw new ValidationException(ResponseMessage.INVALID_RSVP_DATE);
         }
 
-        dateStart.datesUntil(dateEnd).forEach(date -> {
+        dateStart.datesUntil(dateEnd.plusDays(1)).forEach(date -> {
             if (!this.isAvailable(date, request.getRoomId())) throw new ValidationException("Room ID: " + request.getRoomId() +
                     " for date: " + date + " is Unavailable");
         });

@@ -20,9 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -112,6 +110,25 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void downloadPayment(Integer id, HttpServletResponse response) throws IOException {
+        Payment payment = this.getPaymentById(id);
 
+        File file = new File("payment/" + payment.getFilename());
+
+        if (file.exists()) {
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment ; filename=" + payment.getFilename());
+
+            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+
+            byte[] bytes = new byte[1024];
+            int byteRead;
+            while ((byteRead = inputStream.read(bytes)) != -1) {
+                response.getOutputStream().write(bytes, 0, byteRead);
+            }
+            inputStream.close();
+            response.getOutputStream().flush();
+        } else {
+            throw new DataNotFoundException(ResponseMessage.PAYMENT_NOT_FOUND);
+        }
     }
 }

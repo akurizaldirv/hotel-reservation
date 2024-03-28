@@ -6,11 +6,14 @@ import com.enigma.hotelreservation.model.response.CommonResponse;
 import com.enigma.hotelreservation.service.PaymentService;
 import com.enigma.hotelreservation.util.enums.EReservationStatus;
 import com.enigma.hotelreservation.util.validation.EResvStatusValidator;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,6 +47,11 @@ public class PaymentController {
                                 .data(paymentService.getById(id))
                                 .build()
                 );
+    }
+
+    @GetMapping(AppPath.ID + AppPath.DOWNLOAD)
+    public void download(@PathVariable Integer id, HttpServletResponse response) throws IOException {
+        paymentService.downloadPayment(id, response);
     }
 
     @PutMapping(AppPath.ID + AppPath.APPROVE)

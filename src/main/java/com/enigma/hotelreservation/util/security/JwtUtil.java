@@ -32,7 +32,7 @@ public class JwtUtil {
     public String generateToken(AppUser appUser) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes(StandardCharsets.UTF_8));
-            return JWT.create() // Membuat JWT Token
+            return JWT.create()
                     .withIssuer(APP_NAME)
                     .withSubject(appUser.getId().toString())
                     .withExpiresAt(Instant.now().plusSeconds(EXPIRATION))

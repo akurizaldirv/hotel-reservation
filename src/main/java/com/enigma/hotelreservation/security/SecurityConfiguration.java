@@ -1,6 +1,7 @@
 package com.enigma.hotelreservation.security;
 
 import com.enigma.hotelreservation.constant.AppPath;
+import com.enigma.hotelreservation.constant.ResponseMessage;
 import com.enigma.hotelreservation.util.mapper.ErrorWriterMapper;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class SecurityConfiguration {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
             PrintWriter writer = response.getWriter();
-            writer.write(ErrorWriterMapper.mapToString("Authentication Needed", HttpStatus.FORBIDDEN.value()));
+            writer.write(ErrorWriterMapper.mapToString(ResponseMessage.LOGIN_FAILED, HttpStatus.UNAUTHORIZED.value()));
         });
     }
 
